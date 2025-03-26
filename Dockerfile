@@ -1,5 +1,5 @@
-# Use the official Python 3.10 slim image as the base
-FROM python:3.10-slim
+# Use the official Python 3.8.1 image as the base
+FROM python:3.8.1
 
 # Set the working directory inside the container to /app
 WORKDIR /app
@@ -21,7 +21,7 @@ COPY . /app/
 RUN chmod +x /app/entrypoint.sh
 
 # Expose the port used by the Django development server
-EXPOSE 8020
+EXPOSE 8000
 
 # Set the entrypoint script to be executed when the container starts
 ENTRYPOINT ["./entrypoint.sh"]

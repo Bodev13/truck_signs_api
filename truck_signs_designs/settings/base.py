@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import environ
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,12 +20,18 @@ TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+env = environ.Env()
+# reading env file
+environ.Env.read_env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 
+SECRET_KEY = env("DOCKER_SECRET_KEY")
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
 
+#ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
 # Application definition
 
@@ -84,16 +90,16 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'NAME_OF_DB',
-#         'USER': 'DB_USER_NAME',
-#         'PASSWORD': 'DB_PASSWORD',
-#         'HOST': 'localhost',
-#         'PORT': 'PORT_NUMBER',
-#     }
-# }
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
+     }
+ }
 
 
 

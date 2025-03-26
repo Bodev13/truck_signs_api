@@ -1,14 +1,16 @@
 import environ
 from .base import *
 
-DEBUG = True
+#DEBUG = True
 
 env = environ.Env()
 # reading env file
 environ.Env.read_env()
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 SECRET_KEY= env("SECRET_KEY")
-DEBUG = True
+DEBUG = env('DEBUG')
 
 CORS_ALLOWED_ORIGINS = [
     "https://www.signsfortrucks.com",
@@ -16,7 +18,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1']
 
 DATABASES = {
     'default': {
