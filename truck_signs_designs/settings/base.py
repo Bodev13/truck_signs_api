@@ -30,8 +30,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env("DOCKER_SECRET_KEY")
 
 
-#ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
-ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+#ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1','116.203.118.116']
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0').split(',')
 
 # Application definition
 
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-
+"""
 DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -100,6 +100,8 @@ DATABASES = {
         'PORT': env('DB_PORT'),
      }
  }
+"""
+
 
 
 
