@@ -1,3 +1,232 @@
+# Truck Signs API
+
+The purpose of this repository is to help you set up the Truck Signs API Django application and a PostgreSQL database, running them in separate containers on the same network using Docker.
+
+## Prerequisites
+
+- Python 3.8
+- Docker Desktop
+- V-Server
+
+## Table of Contents
+
+[Quickstart](#quickstart)
+[Usage](#usage)
+[Setting up the postgreSQL](#setting_up_the_postgresql)
+[Optional modification](#optional_modification)
+[Checklist](Copy_of_Truck_Signs_API_Checkliste)
+[Dockerfile](Dockerfile)
+[runserver](runserver)
+
+
+## Quickstart
+
+1. Install the Docker Desktop for Mac users here:
+
+https://docs.docker.com/desktop/setup/install/mac-install/
+
+and for Windows users here:
+
+https://docs.docker.com/desktop/setup/install/windows-install/
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Bodev13/truck_signs_api
+cd truck_signs_api
+```
+3. Set the virtual environment:
+
+• Create a virtual environment
+```bash
+python -m venv venv
+```
+• Activate the virtual environment
+
+for Mac users:
+
+```bash
+source venv/bin/activate
+```
+
+for Windows users:
+
+```bash
+.\venv\Scripts\Activate
+```
+
+• Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+• Set up .env file to store the sensibile data, e.g., login & password, host, secret keys
+
+```bash
+cp truck_signs_designs/settings/simple_env_config.env .env
+```
+• Set the default configurations in the .env file to
+
+DB_NAME=trucksigns_db
+DB_USER=trucksigns_user
+DB_PASSWORD=supertrucksignsuser!
+DB_HOST=localhost
+DB_PORT=5432
+
+(for superuser)
+
+DJANGO_SUPERUSER_USERNAME=username
+DJANGO_SUPERUSER_EMAIL=email@example.com
+DJANGO_SUPERUSER_PASSWORD=password
+
+4. Create a postgreSQL Database:
+[How to setup Django with postgreSQL](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
+
+5. Run migrations and the app:
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+6. Create a Docker image:
+```bash
+docker build -t trucks_app .
+```
+7. Create a network:
+```bash
+docker network create trucksigns-net
+```
+8. Run the postgres DB container:
+```bash
+docker run -d \
+--name some-postgres \
+--network trucksigns-net \
+-p 5432:5432 \
+-e POSTGRES_DB=trucksigns_db \
+-e POSTGRES_USER=trucksigns_user \
+-e POSTGRES_PASSWORD=supertrucksignsuser! \
+-v trucksigns_pg_data:/var/lib/postgresql/data \
+postgres
+```
+9. Run the app container:
+```bash
+docker run -d --name trucks_app --network trucksigns-net -p 8020:8020 -v $(pwd)/.env:/app/.env:ro trucks_app
+```
+10. Access the app:
+```bash
+https://<your_server_ip>:8020/admin
+```
+
+## Usage
+
+This will get the app running in a Docker container on your local machine and on the V-Server.
+
+• Adapt the .env file and make sure it is added to the .gitignore
+• Create a superuser manually if needed:
+```bash
+python manage.py createsuperuser
+```
+• Create secret keys (for .env file):
+
+   • SECRET_KEY: 
+```bash
+from django.core.management.utils import get_random_secret_key
+print(get_random_secret_key())
+```
+   • DOCKER_SECRET_KEY: [Docker secret create](https://docs.docker.com/reference/cli/docker/secret/create/)
+• Collect static files manually if needed:
+```bash
+ docker exec -it your_app python manage.py collectstatic --noinput
+```
+• Connect the app and/or db to the network manually if needed:
+```bash
+docker network connect trucksigns-net some-postgres
+docker network connect trucksigns-net trucks_app
+```
+
+## Optional modification
+
+To change Django default runserver port:
+
+•  Create a file “runserver” in the same dir as manage.py: 
+```bash
+touch runserver
+```
+• Edit the runserver file:
+```bash
+ nano runserver
+```
+•  Add the following setup to the runserver:
+```bash
+#!/bin/bash
+exec ./manage.py runserver 0.0.0.0:<your_port>
+```
+• Make the file executable:
+```bash
+chmod +x runserver
+```
+• Run it as
+```bash
+./runserver
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div align="center">
 
 ![Truck Signs](./screenshots/Truck_Signs_logo.png)
