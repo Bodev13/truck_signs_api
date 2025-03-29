@@ -29,7 +29,7 @@ and for Windows users here:
 
 https://docs.docker.com/desktop/setup/install/windows-install/
 
-1. Clone the repository:
+2. Clone the repository:
 
 ```bash
 git clone https://github.com/Bodev13/truck_signs_api
