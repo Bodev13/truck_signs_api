@@ -65,8 +65,8 @@ pip install -r requirements.txt
 ```bash
 cp truck_signs_designs/settings/simple_env_config.env .env
 ```
-• Set the default configurations in the .env file to
-
+• Set the default configurations in the .env file to:
+```bash
 DB_NAME=trucksigns_db
 DB_USER=trucksigns_user
 DB_PASSWORD=supertrucksignsuser!
@@ -78,6 +78,8 @@ DB_PORT=5432
 DJANGO_SUPERUSER_USERNAME=username
 DJANGO_SUPERUSER_EMAIL=email@example.com
 DJANGO_SUPERUSER_PASSWORD=password
+```
+
 
 4. Create a postgreSQL Database:
 [How to setup Django with postgreSQL](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
@@ -121,6 +123,7 @@ https://<your_server_ip>:8020/admin
 This will get the app running in a Docker container on your local machine and on the V-Server.
 
 • Adapt the .env file and make sure it is added to the .gitignore
+
 • Create a superuser manually if needed:
 ```bash
 python manage.py createsuperuser
@@ -133,6 +136,7 @@ from django.core.management.utils import get_random_secret_key
 print(get_random_secret_key())
 ```
    • DOCKER_SECRET_KEY: [Docker secret create](https://docs.docker.com/reference/cli/docker/secret/create/)
+
 • Collect static files manually if needed:
 ```bash
  docker exec -it your_app python manage.py collectstatic --noinput
