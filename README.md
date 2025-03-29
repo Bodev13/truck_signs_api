@@ -10,13 +10,13 @@ The purpose of this repository is to help you set up the Truck Signs API Django 
 
 ## Table of Contents
 
-[Quickstart](#quickstart)
-[Usage](#usage)
-[Setting up the postgreSQL](#setting_up_the_postgresql)
-[Optional modification](#optional_modification)
-[Checklist](Copy_of_Truck_Signs_API_Checkliste)
-[Dockerfile](Dockerfile)
-[runserver](runserver)
+1. [Quickstart](#quickstart)
+2. [Usage](#usage)
+3. [Setting up the postgreSQL](#setting_up_the_postgresql)
+4. [Optional modification](#optional_modification)
+5. [Checklist](Copy_of_Truck_Signs_API_Checkliste)
+6. [Dockerfile](Dockerfile)
+7. [runserver](runserver)
 
 
 ## Quickstart
