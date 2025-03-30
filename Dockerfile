@@ -23,7 +23,5 @@ RUN chmod +x /app/entrypoint.sh
 # Expose the port used by the Django development server
 EXPOSE 8020
 
-ENV ALLOWED_HOSTS='*'
-
 # Set the entrypoint script to be executed when the container starts
 ENTRYPOINT ["./entrypoint.sh"]
