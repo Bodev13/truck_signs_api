@@ -14,8 +14,8 @@ COPY requirements.txt .
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the project files to the container
-COPY . /app/
+# Copy the project file to the container
+COPY . .
 
 # Make the entrypoint script executable
 RUN chmod +x /app/entrypoint.sh
