@@ -99,10 +99,9 @@ docker network create trucksigns-net
 ```
 8. Run the postgres DB container:
 ```bash
-docker run -d \
+docker run \
 --name some-postgres \
---network trucksigns-net \
--p 5432:5432 \
+--network trucks-net \
 -e POSTGRES_DB=trucksigns_db \
 -e POSTGRES_USER=trucksigns_user \
 -e POSTGRES_PASSWORD=supertrucksignsuser! \
@@ -111,7 +110,7 @@ postgres
 ```
 9. Run the app container:
 ```bash
-docker run -d --name trucks_app --network trucksigns-net -p 8020:8020 -v $(pwd)/.env:/app/.env:ro trucks_app
+docker run --name trucks_app --network trucks-net --env-file truck_signs_designs/settings/.env -p 8020:8020 trucks_app
 ```
 10. Access the app:
 ```bash

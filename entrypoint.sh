@@ -27,8 +27,12 @@ password = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
 if username and not User.objects.filter(username=username).exists():
     User.objects.create_superuser(username, email, password)
     print("Superuser created")
-else:
-    print("Superuser already exists or username missing")
+if not username:
+    print("No superuser created, username not provided")
+if not email:
+    print("No superuser created, email not provided")
+if not password:
+    print("No superuser created, password not provided")
 END
 
 gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8020
