@@ -3,15 +3,15 @@ set -e
 
 echo "Waiting for postgres to connect ..."
 
-while ! nc -z some-postgres 5432; do
+while ! nc -z db 5432; do
   sleep 0.1
 done
 
 echo "PostgreSQL is active"
 
-python manage.py collectstatic --noinput &&
-python manage.py makemigrations &&
-python manage.py migrate &&
+python manage.py collectstatic --noinput
+python manage.py makemigrations
+python manage.py migrate
 
 echo "Checking and creating superuser if necessary..."
 
@@ -35,9 +35,7 @@ if not password:
     print("No superuser created, password not provided")
 END
 
-gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8020
-
-
 echo "Postgresql migrations finished"
 
-#python manage.py runserver 0.0.0.0:8000
+gunicorn truck_signs_designs.wsgi:application --bind 0.0.0.0:8020
+
