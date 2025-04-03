@@ -12,10 +12,9 @@ The purpose of this repository is to help you set up the Truck Signs API Django 
 
 1. [Quickstart](#quickstart)
 2. [Usage](#usage)
-3. [Optional modification](#optional-modification)
-4. [Checklist](Checklist.pdf)
-5. [Dockerfile](Dockerfile)
-6. [runserver](runserver)
+3. [Checklist](Checklist.pdf)
+4. [Dockerfile](Dockerfile)
+
 
 
 ## Quickstart
@@ -60,47 +59,45 @@ for Windows users:
 pip install -r requirements.txt
 ```
 
-• Set up .env file to store the sensibile data, e.g., login & password, host, secret keys
-
-```bash
-cp truck_signs_designs/settings/simple_env_config.env .env
-```
-• Set the default configurations in the .env file to:
-```bash
-DB_NAME=trucksigns_db
-DB_USER=trucksigns_user
-DB_PASSWORD=supertrucksignsuser!
-DB_HOST=localhost
-DB_PORT=5432
-
-(for superuser)
-
-DJANGO_SUPERUSER_USERNAME=username
-DJANGO_SUPERUSER_EMAIL=email@example.com
-DJANGO_SUPERUSER_PASSWORD=password
-```
-
-
 4. Create a postgreSQL Database:
 [How to setup Django with postgreSQL](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04)
 
-5. Run migrations and the app:
+5. Create a superuser manually:
+```bash
+python manage.py createsuperuser
+```
+
+6. Run migrations and the app:
 ```bash
 python manage.py migrate
 python manage.py runserver
 ```
-6. Create a Docker image:
+
+## Usage
+
+This will get the app running in a Docker container on your local machine and on the V-Server.
+
+• Set up .env file and make sure it is added to the .gitignore
+
+```bash
+cp truck_signs_designs/settings/simple_env_config.env truck_signs_designs/settings/.env
+```
+• Add your v-server-ip to the .env file under:
+```bash
+ALLOWED_HOSTS:your-v-server-ip, localhost
+```
+• Create a Docker image:
 ```bash
 docker build -t trucks_app .
 ```
-7. Create a network:
+• Create a network:
 ```bash
 docker network create trucksigns-net
 ```
-8. Run the postgres DB container:
+• Run the postgres DB container:
 ```bash
 docker run \
---name some-postgres \
+--name db \
 --network trucks-net \
 -e POSTGRES_DB=trucksigns_db \
 -e POSTGRES_USER=trucksigns_user \
@@ -108,25 +105,15 @@ docker run \
 -v trucksigns_pg_data:/var/lib/postgresql/data \
 postgres
 ```
-9. Run the app container:
+• Run the app container:
 ```bash
 docker run --name trucks_app --network trucks-net --env-file truck_signs_designs/settings/.env -p 8020:8020 trucks_app
 ```
-10. Access the app:
+• Access the app:
 ```bash
 https://<your_server_ip>:8020/admin
 ```
 
-## Usage
-
-This will get the app running in a Docker container on your local machine and on the V-Server.
-
-• Adapt the .env file and make sure it is added to the .gitignore
-
-• Create a superuser manually if needed:
-```bash
-python manage.py createsuperuser
-```
 • Create secret keys (for .env file):
 
    • SECRET_KEY: 
@@ -145,88 +132,6 @@ print(get_random_secret_key())
 docker network connect trucksigns-net some-postgres
 docker network connect trucksigns-net trucks_app
 ```
-
-## Optional modification
-
-To change Django default runserver port:
-
-•  Create a file “runserver” in the same dir as manage.py: 
-```bash
-touch runserver
-```
-• Edit the runserver file:
-```bash
- nano runserver
-```
-•  Add the following setup to the runserver:
-```bash
-#!/bin/bash
-exec ./manage.py runserver 0.0.0.0:<your_port>
-```
-• Make the file executable:
-```bash
-chmod +x runserver
-```
-• Run it as
-```bash
-./runserver
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <div align="center">
