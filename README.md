@@ -97,7 +97,7 @@ docker network create trucksigns-net
 • Run the postgres DB container:
 ```bash
 docker run \
---name db \
+--name truck_signs_db \
 --network trucksigns-net \
 -e POSTGRES_DB=trucksigns_db \
 -e POSTGRES_USER=trucksigns_user \
