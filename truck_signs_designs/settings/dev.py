@@ -1,14 +1,16 @@
 import environ
 from .base import *
 
-DEBUG = True
+# DEBUG = True
 
 env = environ.Env()
 # reading env file
 environ.Env.read_env()
 
-SECRET_KEY= env("SECRET_KEY")
-DEBUG = True
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env('DEBUG')
 
 CORS_ALLOWED_ORIGINS = [
     "https://www.signsfortrucks.com",
@@ -16,6 +18,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+# ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = env(
+    'ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0').split(',')
 
 
 DATABASES = {
@@ -29,9 +34,8 @@ DATABASES = {
     }
 }
 
-STRIPE_PUBLISHABLE_KEY=env("STRIPE_PUBLISHABLE_KEY")
-STRIPE_SECRET_KEY=env("STRIPE_SECRET_KEY")
-
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

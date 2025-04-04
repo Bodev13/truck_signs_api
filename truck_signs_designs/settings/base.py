@@ -9,23 +9,34 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
+import environ
 import os
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ROOT_BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR,'templates')
+ROOT_BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
+TEMPLATES_DIR = os.path.join(ROOT_BASE_DIR, 'templates')
+
+env = environ.Env()
+# reading env file
+environ.Env.read_env()
+environ.Env.read_env(os.path.join(
+    BASE_DIR, 'settings', '.env'))
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist
 
 
+SECRET_KEY = env("DOCKER_SECRET_KEY")
+DEBUG = env.bool('DEBUG', default=False)
 
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
-
+# ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = env(
+    'ALLOWED_HOSTS', default='localhost,127.0.0.1,0.0.0.0').split(',')
 
 # Application definition
 
@@ -44,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,16 +97,15 @@ WSGI_APPLICATION = 'truck_signs_designs.wsgi.application'
 # }
 
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'NAME_OF_DB',
-#         'USER': 'DB_USER_NAME',
-#         'PASSWORD': 'DB_PASSWORD',
-#         'HOST': 'localhost',
-#         'PORT': 'PORT_NUMBER',
-#     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': env('DB_NAME'),
+#        'USER': env('DB_USER'),
+#        'PASSWORD': env('DB_PASSWORD'),
+#        'HOST': env('DB_HOST'),
+#       'PORT': env('DB_PORT'),
+#   }
 # }
-
 
 
 # Password validation
@@ -135,7 +146,7 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = (os.path.join(ROOT_BASE_DIR, 'static'),)
-STATIC_ROOT = os.path.join(ROOT_BASE_DIR,'static/')
+STATIC_ROOT = os.path.join(ROOT_BASE_DIR, 'static/')
 
 # STATICFILES_FINDERS = (
 # 'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -147,8 +158,6 @@ MEDIA_ROOT = os.path.join(ROOT_BASE_DIR, 'media')
 
 # STRIPE_PUBLISHABLE_KEY=os.getenv("STRIPE_PUBLISHABLE_KEY")
 # STRIPE_SECRET_KEY=os.getenv("STRIPE_SECRET_KEY")
-
-
 
 
 # EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
